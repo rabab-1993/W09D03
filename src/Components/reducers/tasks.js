@@ -9,15 +9,17 @@ const initialState = {
         return payload;
   
       case "NEW_TASK":
-        const { task } = payload;
-        console.log(state.tasks);
-       
-        return { b: [...state,task] };
+        const { task } = payload;       
+        return { tasks: [...state.tasks , task] };
   
       case "DELETE_TASK":
         const { deltask } = payload;
-        console.log(state.tasks);
-        return { del: state.tasks.filter((el) => el !== deltask) };
+        return { tasks: state.tasks.filter((el) => el._id !== deltask) };
+
+      case "UPDATE_TASK":
+        const { Updtask } = payload;
+        console.log(Updtask);
+        return { tasks: state.tasks.map((el) => el._id == Updtask) };
         
   
       default:
@@ -40,10 +42,20 @@ const initialState = {
       payload: data,
     };
   };
+
+
   export const delTask = (data) => {
     return {
       type: "DELETE_TASK",
-      payload: data,
+      payload: {deltask: data[0]._id },
+    };
+  };
+
+  export const UpdateTask = (data) => {
+   
+    return {
+      type: "UPDATE_TASK",
+      payload: {Updtask: data[0]._id },
     };
   };
   
