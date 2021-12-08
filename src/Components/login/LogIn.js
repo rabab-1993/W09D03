@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../reducers/login";
 
 const Login = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const state = useSelector((state) => {
+    return state;
+  });
   const [logUser, setLogUser] = useState({
     email: "",
     password: "",
@@ -24,9 +26,9 @@ const Login = () => {
 
       const data = {
         token: result.data.token,
-        user: result.data.result.user._id,
+        user: result.data.result._id,
       };
-      console.log(data);
+      console.log(result.data.result._id);
       dispatch(logIn(data));
       toTaskPage();
     } catch (error) {

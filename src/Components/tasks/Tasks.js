@@ -30,7 +30,6 @@ const Task = () => {
         tasks: result.data,
       };
       dispatch(getTasks(data));
-    
     } catch (error) {
       console.log(error);
     }
@@ -53,36 +52,32 @@ const Task = () => {
       );
 
       dispatch(newTask(result.data));
-     
     } catch (error) {
       console.log(error);
     }
     allTask();
   };
 
+  const deleteTask = async (id) => {
+    console.log(id);
+    try {
+      const result = await axios.delete(
+        `${
+          process.env.REACT_APP_BASE_URL
+        }/tasks/delete?isDeleted=${true}&_id=${id}`,
 
-  const deleteTask = async () => {
-      try {
-        const result = await axios.delete(
-            `${process.env.REACT_APP_BASE_URL}/tasks/delete`,
-            {
-                _id: state.taskReducer._id,
-                isDeleted: true,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${state.signIn.token}`,
-              },
-            }
-          );
-    
-          dispatch(delTask(result.data));
-          console.log(state.signIn.token);
-         
-      } catch (error) {
-        console.log(error);
-      }
-  }
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+      dispatch(delTask(result.data));
+      console.log(state.signIn.token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -97,11 +92,11 @@ const Task = () => {
         <button onClick={adTask}>ADD</button>
       </div>
       <div>
-        {state.taskReducer.tasks.map((items) => {
+        {state.taskReducer.tasks && state.taskReducer.tasks.map((items) => {
           return (
             <div key={items._id}>
               <h2>{items.name}</h2>
-              <FcFullTrash onClick={deleteTask}/>
+              <FcFullTrash onClick={() => deleteTask(items._id)} />
             </div>
           );
         })}
